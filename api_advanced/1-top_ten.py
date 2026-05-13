@@ -1,17 +1,22 @@
 #!/usr/bin/python3
-"""Get the titles of the first 10 hot posts for a given subreddit."""
+"""Print the titles of the first 10Hot Posts"""
 import requests
 
 
 def top_ten(subreddit):
-
-    """Print titles of top 10 hot posts for a subreddit."""
-    url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
+    """The top ten titles"""
     headers = {'User-Agent': 'MyAPI/0.0.1'}
-    response = requests.get(url, headers=headers, allow_redirects=False)
-    if response.status_code != 200:
-        print(None, end='')
-        return
-    posts = response.json().get('data', {}).get('children', [])
-    for i in range(min(10, len(posts))):
-        print(posts[i].get('data', {}).get('title', '').strip())
+    url = "https://reddit.com/r/{}.json".format(subreddit)
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        json_data = response.json()
+        for i in range(10):
+            print(
+                    json_data.get('data')
+                    .get('children')[i]
+                    .get('data')
+                    .get('title')
+                )
+    else:
+        print(None)
